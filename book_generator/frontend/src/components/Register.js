@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate  } from 'react-router-dom';
+import '../Styles/Register.css';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -19,19 +20,24 @@ function Register() {
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username</label>
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+    <div className='register-container'>
+      <div className='register-h2'>
+        <h2>Register</h2>
+          <div className='register-form'>
+            <form onSubmit={handleSubmit}>
+              <div className='register-label'>
+                <label>Username: </label>
+                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}  className='register-input'/>
+              </div>
+              <div className='register-label'>
+                <label>Password:  </label>
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className='register-passwordinput'/>
+              </div>
+
+              <button className='register-button' type="submit" >Register</button>
+           </form>
         </div>
-        <div>
-          <label>Password</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
-        <button type="submit">Register</button>
-      </form>
+      </div>
     </div>
   );
 }

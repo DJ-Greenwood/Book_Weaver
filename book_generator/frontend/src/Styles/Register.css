@@ -1,5 +1,5 @@
-/* Login.css */
-.login-container {
+/* register.css */
+.register-container {
   text-align: center;
   border: #0056b3;
   border-width: 5px;
@@ -11,7 +11,7 @@
   box-shadow: 0 0 10px rgba(88, 91, 224, 0.1);
 }
 
-  .login-h2 {
+  .register-h2 {
     border: #0056b3;
     border-width: 5px;
     text-align: center;
@@ -19,19 +19,19 @@
     margin-bottom: 20px;
   }
 
-  .login-form {
+  .register-form {
     font-size: large; 
     font-weight: bold;
     margin-bottom: 5px;
   }
-  
-  .login-label{
+
+  .register-lable{
     font-size: large;
     font-weight: bold;
     margin-bottom: 5px;
   }
   
-  .login-input { 
+  .register-input { 
     width: 75%;
     padding: 7px;
     margin-bottom: 7px;
@@ -39,7 +39,7 @@
     border-radius: 5px;
   }
 
-  .login-passwordinput {    
+  .register-passwordinput {    
     width: 75%;
     padding: 7px;
     margin-bottom: 7px;
@@ -56,7 +56,7 @@
     margin-top: 10px;
   }
 
-  .login-button {
+  .register-button {
     padding: 10px;
     background-color: #10345a;
     color: white;
@@ -64,7 +64,7 @@
     border-radius: 5px;
     cursor: pointer;
   }  
-  .login-button:hover {
+  .register-button:hover {
     background-color: #0056b3;
   }
 
