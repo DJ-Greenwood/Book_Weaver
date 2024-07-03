@@ -2,14 +2,21 @@ from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_hashing import Hashing
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///books.db'
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+hashing = Hashing(app)
+
+# Image Constants
+IMAGE_COUNTER = 0
+IMAGE_PATHS = "./Book_Weaver/book_generator/backend/Images/"
+IMAGE_DESCRIPTION = "Images/"
 
 # User Model
 class User(UserMixin, db.Model):
@@ -32,11 +39,11 @@ def load_user(user_id):
 def index():
     return render_template('index.html')
 
-
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    new_user = User(username=data['username'], password=data['password'])
+    hashed_password = hashing.hash_value(data['password'], salt='abc123')  # You can use a more secure salt here
+    new_user = User(username=data['username'], password=hashed_password)
     db.session.add(new_user)
     db.session.commit()
     return jsonify({"message": "User registered successfully!"}), 201
@@ -45,10 +52,10 @@ def register():
 def login():
     data = request.get_json()
     user = User.query.filter_by(username=data['username']).first()
-    if user and user.password == data['password']:
+    if user and hashing.check_value(user.password, data['password'], salt='abc123'):  # Use the same salt as above
         login_user(user)
-        return jsonify({"message": "Login successful!"}), 200
-    return jsonify({"message": "Invalid credentials"}), 401
+        return jsonify({"message": "Login successful!", "user_id": user.id}), 200
+    return jsonify({"message": "Invalid credentials!"}), 401
 
 @app.route('/logout')
 @login_required
@@ -69,7 +76,7 @@ def create_book_idea():
 @login_required
 def get_book_ideas():
     ideas = BookIdea.query.filter_by(user_id=current_user.id).all()
-    return jsonify([{"title": idea.title, "description": idea.description} for idea in ideas]), 200
+    return jsonify([{"title": idea.title, "description": idea.description, "user_id": idea.user_id} for idea in ideas]), 200
 
 if __name__ == '__main__':
     db.create_all()

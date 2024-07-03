@@ -1,76 +1,20 @@
-/* Login.css */
-.login-container {
-  text-align: center;
-  border: #0056b3;
-  border-width: 5px;
-  background-color: #d9e7f7;
-  border-radius: 5px;
-  max-width: 400px;
-  margin: 2px auto;
-  padding: 5px;
-  box-shadow: 0 0 10px rgba(88, 91, 224, 0.1);
+/* Card styles for displaying content */
+.card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
 }
 
-  .login-h2 {
-    border: #0056b3;
-    border-width: 5px;
-    text-align: center;
-    color: #24041e;
-    margin-bottom: 20px;
-  }
+/* Typography improvements */
+.card-title {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: #222;
+}
 
-  .login-form {
-    font-size: large; 
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .login-input { 
-    width: 75%;
-    padding: 7px;
-    margin-bottom: 7px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-
-  .login-passwordinput {    
-    width: 75%;
-    padding: 7px;
-    margin-bottom: 7px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    
-  }
-  
-  .button-group {
-    display: flex;
-    gap: 20px; /* This creates space between the buttons */
-    justify-content: center;
-    padding-block: 10px;
-    margin-top: 10px;
-  }
-
-  .login-button {
-    padding: 10px;
-    background-color: #10345a;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }  
-  .login-button:hover {
-    background-color: #0056b3;
-  }
-
-
-  .register-button {
-    padding: 10px;
-    background-color: #10345a;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }  
-  .register-button:hover {
-    background-color: #0056b3;
-  }
+.card-description {
+  margin-bottom: 1rem;
+  color: #333;
+}
