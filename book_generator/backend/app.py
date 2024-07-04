@@ -13,11 +13,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 hashing = Hashing(app)
 
-# Image Constants
-IMAGE_COUNTER = 0
-IMAGE_PATHS = "./Book_Weaver/book_generator/backend/Images/"
-IMAGE_DESCRIPTION = "Images/"
-
 # User Model
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -76,7 +71,17 @@ def create_book_idea():
 @login_required
 def get_book_ideas():
     ideas = BookIdea.query.filter_by(user_id=current_user.id).all()
-    return jsonify([{"title": idea.title, "description": idea.description, "user_id": idea.user_id} for idea in ideas]), 200
+    return jsonify([{"id": idea.id, "title": idea.title, "description": idea.description, "user_id": idea.user_id} for idea in ideas]), 200
+
+@app.route('/bookideas/<int:id>', methods=['DELETE'])
+@login_required
+def delete_book_idea(id):
+    idea = BookIdea.query.get_or_404(id)
+    if idea.user_id != current_user.id:
+        return jsonify({"message": "You do not have permission to delete this book idea!"}), 403
+    db.session.delete(idea)
+    db.session.commit()
+    return jsonify({"message": "Book idea deleted successfully!"}), 200
 
 if __name__ == '__main__':
     db.create_all()

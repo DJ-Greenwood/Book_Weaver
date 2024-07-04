@@ -9,6 +9,7 @@ function Dashboard() {
   const [bookIdeas, setBookIdeas] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchBookIdeas();
@@ -19,7 +20,6 @@ function Dashboard() {
       const response = await axios.get('http://localhost:5000/bookideas');
       if (response.data.length !== 0) {
         setBookIdeas(response.data);
-        return;
       }
     } catch (error) {
       console.error('Error fetching book ideas', error);
@@ -27,17 +27,43 @@ function Dashboard() {
   };
 
   const handleSubmit = async (event) => {
-    const user_id = localStorage.getItem('userId');
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/bookideas', { title, description, user_id }, { withCredentials: true });
-      if (response.data.message !== 'Book idea created successfully!') {
+      const response = await axios.post('http://localhost:5000/bookideas', { title, description }, { withCredentials: true });
+      if (response.data.message === 'Book idea created successfully!') {
+        fetchBookIdeas();
+        setTitle('');
+        setDescription('');
+      } else {
+        fetchBookIdeas();
         alert(response.data.message);
       }
-      fetchBookIdeas();
     } catch (error) {
+      fetchBookIdeas();
       console.error('Error creating book idea', error);
     }
+    fetchBookIdeas();
+  };
+
+  const handleDelete = async (id) => {
+    setLoading(true);
+    try {
+      const response = await axios.delete(`http://localhost:5000/bookideas/${id}`);
+      if (response.data.message === 'Book idea deleted successfully!') {
+        fetchBookIdeas();
+        setLoading(true);
+      } else {
+        fetchBookIdeas();
+        alert(response.data.message);
+      }
+    } catch (error) {
+      fetchBookIdeas();
+      console.error('Error deleting book idea.', error);
+    } finally {
+      fetchBookIdeas();
+      setLoading(false);
+    }
+    fetchBookIdeas();
   };
 
   return (
@@ -67,9 +93,16 @@ function Dashboard() {
       </div>
       <div>
         <h3 className="text-center mt-3 mb-2">Your Book Ideas</h3>
-        {bookIdeas.map((idea, index) => (
-          <div className="card" key={index}>
+        {bookIdeas.map((idea) => (
+          <div className="card" key={idea.id}>
             <BookIdea title={idea.title} description={idea.description} />
+            <button 
+              className="dashboard-button" 
+              onClick={() => handleDelete(idea.id)} 
+              disabled={loading}
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>
@@ -78,3 +111,4 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
